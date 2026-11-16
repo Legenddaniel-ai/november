@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oyemekun Grammar School - Student Result Sheet</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="left-section">
+    
+    <div id="logo-box">
+      <img src="Oyemekun-Grammar-Sch.jpg" alt="School Logo" />
+    </div>
+
+    <div id="school-header">
+      <h1>OYEMEKUN GRAMMAR SCHOOL</h1>
+      <p id="motto">Prodeo et Patria</p>
+      <div id="sheet-badge">STUDENT RESULT SHEET</div>
+    </div>
+
+    <div id="student-info">
+      <div class="info-box" id="box-name">
+        <label>STUDENT FULL NAME:</label>
+        <input type="text" id="studentName" oninput="checkResult()" placeholder="Enter full name" />
+      </div>
+
+      <div class="info-box" id="box-class">
+        <label>Class:</label>
+        <select id="studentClass" onchange="checkResult()">
+          <option value="">Select</option>
+          <option value="JSS 1">JSS 1</option>
+          <option value="JSS 2">JSS 2</option>
+          <option value="JSS 3">JSS 3</option>
+          <option value="SS 1">SS 1</option>
+          <option value="SS 2">SS 2</option>
+          <option value="SS 3">SS 3</option>
+        </select>
+      </div>
+
+      <div class="info-box" id="box-term">
+        <label>Term:</label>
+        <select id="studentTerm" onchange="checkResult()">
+          <option value="">Select</option>
+          <option value="1st Term">1st</option>
+          <option value="2nd Term">2nd</option>
+          <option value="3rd Term">3rd</option>
+        </select>
+      </div>
+
+      <div class="info-box" id="box-session">
+        <label>Session:</label>
+        <input type="text" id="studentSession" oninput="checkResult()" placeholder="2025/2026" />
+      </div>
+    </div>
+
+    <table id="input-table">
+      <thead>
+        <tr>
+          <th style="width: 46%;">Subject</th>
+          <th style="width: 18%;">CA1 (20)</th>
+          <th style="width: 18%;">CA2 (20)</th>
+          <th style="width: 18%;">Exam (60)</th>
+        </tr>
+      </thead>
+      <tbody id="input-rows"></tbody>
+    </table>
+
+    <div id="remarks-area">
+      <p><strong>Class Teacher's Remark:</strong> <span id="teacherRemark">__________________________</span></p>
+      <p><strong>Principal's Remark:</strong> <span id="principalRemark">__________________________</span></p>
+    </div>
+
+    <button id="alert-btn" onclick="showAlert()">Show Result Alert</button>
+  </div>
+
+  <div id="right-section">
+    
+    <div id="alert-box">
+      <strong id="alert-title">LIVE RESULT ALERT</strong>
+      <p id="alert-text">Enter student details and scores on the left.</p>
+    </div>
+
+    <div id="result-card">
+      <div id="card-header">
+        <img src="Oyemekun-Grammar-Sch.jpg" alt="Logo" id="right-logo" />
+        <div>
+          <h2>OYEMEKUN GRAMMAR SCHOOL</h2>
+          <p>Student Result Sheet</p>
+        </div>
+      </div>
+
+      <div id="summary-box">
+        <p><strong>Name:</strong> <span id="outName">---</span></p>
+        <p><strong>Class:</strong> <span id="outClass">---</span></p>
+        <p><strong>Term:</strong> <span id="outTerm">---</span></p>
+        <p><strong>Session:</strong> <span id="outSession">---</span></p>
+      </div>
+
+      <table id="result-table">
+        <thead>
+          <tr>
+            <th style="width: 45%;">Subject</th>
+            <th style="width: 15%;">Total</th>
+            <th style="width: 15%;">Grade</th>
+            <th style="width: 25%;">Remark</th>
+          </tr>
+        </thead>
+        <tbody id="result-rows">
+          <tr>
+            <td colspan="4" style="text-align: center; color: gray;">No subjects entered yet.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div id="bottom-total">
+        <span><strong>Subjects:</strong> <b id="totalSub">0</b></span>
+        <span><strong>Total Score:</strong> <b id="grandTotal">0</b></span>
+        <span><strong>Average:</strong> <b id="avgScore">0%</b></span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    var subjects = [
+      "English Language",
+      "Mathematics",
+      "Civic Education",
+      "Biology",
+      "Physics",
+      "Chemistry",
+      "Agricultural Science",
+      "Further Mathematics",
+      "Geography",
+      "Economics",
+      "Government",
+      "Literature-in-English",
+      "Christian Religious Studies",
+      "Islamic Religious Studies",
+      "Financial Accounting",
+      "Commerce",
+      "Computer Studies",
+      "Data Processing",
+      "Technical Drawing",
+      "Basic Science",
+      "Basic Technology",
+      "Social Studies",
+      "Business Studies",
+      "Yoruba Language",
+      "Igbo Language",
+      "Hausa Language",
+      "French Language"
+    ];
+
+    var inputBody = document.getElementById("input-rows");
+    var optionsHTML = '<option value="">Select subject</option>';
+
+    for (var s = 0; s < subjects.length; s++) {
+      optionsHTML += '<option value="' + subjects[s] + '">' + subjects[s] + '</option>';
+    }
+
+    for (var i = 0; i < 9; i++) {
+      inputBody.innerHTML +=
+        '<tr>' +
+          '<td><select id="sub' + i + '" onchange="checkResult()">' + optionsHTML + '</select></td>' +
+          '<td><input type="number" id="ca1_' + i + '" min="0" max="20" oninput="checkResult()" /></td>' +
+          '<td><input type="number" id="ca2_' + i + '" min="0" max="20" oninput="checkResult()" /></td>' +
+          '<td><input type="number" id="exam_' + i + '" min="0" max="60" oninput="checkResult()" /></td>' +
+        '</tr>';
+    }
+
+    function checkResult() {
+      var name = document.getElementById("studentName").value;
+      var studentClass = document.getElementById("studentClass").value;
+      var term = document.getElementById("studentTerm").value;
+      var session = document.getElementById("studentSession").value;
+
+      document.getElementById("outName").innerText = name !== "" ? name : "---";
+      document.getElementById("outClass").innerText = studentClass !== "" ? studentClass : "---";
+      document.getElementById("outTerm").innerText = term !== "" ? term : "---";
+      document.getElementById("outSession").innerText = session !== "" ? session : "---";
+
+      var resultBody = document.getElementById("result-rows");
+      resultBody.innerHTML = "";
+
+      var count = 0;
+      var sumAll = 0;
+      var hasError = false;
+
+      for (var i = 0; i < 9; i++) {
+        var sub = document.getElementById("sub" + i).value;
+        var ca1 = Number(document.getElementById("ca1_" + i).value);
+        var ca2 = Number(document.getElementById("ca2_" + i).value);
+        var exam = Number(document.getElementById("exam_" + i).value);
+
+        if (ca1 > 20 || ca2 > 20 || exam > 60 || ca1 < 0 || ca2 < 0 || exam < 0) {
+          hasError = true;
+        }
+
+        if (sub !== "") {
+          count = count + 1;
+          var total = ca1 + ca2 + exam;
+          sumAll = sumAll + total;
+
+          var grade = "";
+          var remark = "";
+
+          if (total >= 75) {
+            grade = "A1";
+            remark = "Excellent";
+          } else if (total >= 70) {
+            grade = "B2";
+            remark = "Very Good";
+          } else if (total >= 65) {
+            grade = "B3";
+            remark = "Good";
+          } else if (total >= 60) {
+            grade = "C4";
+            remark = "Credit";
+          } else if (total >= 55) {
+            grade = "C5";
+            remark = "Credit";
+          } else if (total >= 50) {
+            grade = "C6";
+            remark = "Credit";
+          } else if (total >= 45) {
+            grade = "D7";
+            remark = "Pass";
+          } else if (total >= 40) {
+            grade = "E8";
+            remark = "Pass";
+          } else {
+            grade = "F9";
+            remark = "Fail";
+          }
+
+          resultBody.innerHTML +=
+            '<tr>' +
+              '<td>' + sub + '</td>' +
+              '<td>' + total + '</td>' +
+              '<td>' + grade + '</td>' +
+              '<td>' + remark + '</td>' +
+            '</tr>';
+        }
+      }
+
+      if (count === 0) {
+        resultBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: gray;">No subjects entered yet.</td></tr>';
+      }
+
+      var average = 0;
+      if (count > 0) {
+        average = (sumAll / count).toFixed(1);
+      }
+
+      document.getElementById("totalSub").innerText = count;
+      document.getElementById("grandTotal").innerText = sumAll;
+      document.getElementById("avgScore").innerText = average + "%";
+
+      if (count > 0) {
+        if (average >= 70) {
+          document.getElementById("teacherRemark").innerText = "Brilliant result. Keep it up!";
+          document.getElementById("principalRemark").innerText = "Promoted with Distinction.";
+        } else if (average >= 50) {
+          document.getElementById("teacherRemark").innerText = "Good effort. Work harder.";
+          document.getElementById("principalRemark").innerText = "Promoted.";
+        } else if (average >= 40) {
+          document.getElementById("teacherRemark").innerText = "Fair result. Needs improvement.";
+          document.getElementById("principalRemark").innerText = "Promoted on trial.";
+        } else {
+          document.getElementById("teacherRemark").innerText = "Poor performance.";
+          document.getElementById("principalRemark").innerText = "To repeat class.";
+        }
+      }
+
+      var alertBox = document.getElementById("alert-box");
+      var alertTitle = document.getElementById("alert-title");
+      var alertText = document.getElementById("alert-text");
+
+      if (hasError) {
+        alertBox.style.borderLeftColor = "red";
+        alertTitle.innerText = "WARNING ALERT!";
+        alertText.innerText = "Check your scores: CA1 max is 20, CA2 max is 20, Exam max is 60.";
+      } else if (count > 0) {
+        alertBox.style.borderLeftColor = "#0f5132";
+        alertTitle.innerText = "RESULT ALERT: " + (name !== "" ? name : "Student");
+        alertText.innerText = "Class: " + studentClass + " | Subjects: " + count + " | Average: " + average + "%";
+      } else {
+        alertBox.style.borderLeftColor = "#146c43";
+        alertTitle.innerText = "LIVE RESULT ALERT";
+        alertText.innerText = "Enter student details and scores on the left.";
+      }
+    }
+
+    function showAlert() {
+      var name = document.getElementById("studentName").value;
+      var studentClass = document.getElementById("studentClass").value;
+      var count = document.getElementById("totalSub").innerText;
+      var average = document.getElementById("avgScore").innerText;
+
+      if (name === "" || studentClass === "") {
+        alert("Please enter the Student Name and Class first.");
+      } else if (count === "0") {
+        alert("Please select at least one subject and enter scores.");
+      } else {
+        // alert(
+        //   "OYEMEKUN GRAMMAR SCHOOL - RESULT ALERT\n\n" +
+        //   "Name: " + name + "\n" +
+        //   "Class: " + studentClass + "\n" +
+        //   "Subjects Offered: " + count + "\n" +
+        //   "Average Score: " + average
+        // );
+      }
+    }
+  </script>
+</body>
+</html>
